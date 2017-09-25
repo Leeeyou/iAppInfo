@@ -13,20 +13,19 @@ import com.leeeyou.packageinfo.view.AppInfoFragment
  *
  * viewPage adapter, and save two variables, tabLayout and toolbar
  */
-class ViewPageAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
+class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
-    private var dataList: MutableList<AppInfo>? = null
-    private var tabLayout: TabLayout? = null
-    private var toolbar: Toolbar? = null
+    private lateinit var dataList: MutableList<AppInfo>
+    private lateinit var tabLayout: TabLayout
+    private lateinit var toolbar: Toolbar
 
-    constructor(fm: FragmentManager?, data: MutableList<AppInfo>, tabLayout: TabLayout, toolbar: Toolbar) : this(fm) {
-        dataList = data
+    constructor(fm: FragmentManager, data: MutableList<AppInfo>, tabLayout: TabLayout, toolbar: Toolbar) : this(fm) {
+        this.dataList = data
         this.tabLayout = tabLayout
         this.toolbar = toolbar
     }
 
-    override fun getItem(position: Int): Fragment =
-            AppInfoFragment.newInstance(dataList, tabLayout, toolbar, position)
+    override fun getItem(position: Int): Fragment = AppInfoFragment(dataList, tabLayout, toolbar, position)
 
     override fun getCount(): Int = 2
 }

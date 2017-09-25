@@ -73,13 +73,13 @@ class MainActivity : AppCompatActivity() {
      * @return 返回 byteStr的md5值
      */
     private fun encryptionMD5(byteStr: ByteArray): String {
-        var messageDigest: MessageDigest? = null
+        val messageDigest: MessageDigest?
         val md5StrBuff = StringBuffer()
         try {
             messageDigest = MessageDigest.getInstance("MD5")
             messageDigest!!.reset()
             messageDigest.update(byteStr)
-            val byteArray = messageDigest!!.digest()
+            val byteArray = messageDigest.digest()
             for (i in byteArray.indices) {
                 if (Integer.toHexString(0xFF and byteArray[i].toInt()).length == 1) {
                     md5StrBuff.append("0").append(Integer.toHexString(0xFF and byteArray[i].toInt()))

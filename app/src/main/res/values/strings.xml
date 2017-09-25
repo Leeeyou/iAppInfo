@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">PackageInfo</string>
+    <string name="app_name">AppInfo</string>
+    <string name="clipSuccess">包名复制成功</string>
 </resources>

@@ -4,6 +4,7 @@
     android:id="@+id/rlAppInfo"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    android:background="@drawable/selector_click"
     android:paddingLeft="12dp"
     android:paddingRight="12dp"
     android:paddingTop="12dp">
