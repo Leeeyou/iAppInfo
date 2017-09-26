@@ -58,7 +58,7 @@ class AppInfoFragment() : Fragment() {
             }
         }
 
-        val systemAppAdapter = AppInfoAdapter(R.layout.item_packageinfo, mList.filter(predicate))
+        val systemAppAdapter = AppInfoAdapter(R.layout.item_app_info, mList.filter(predicate))
         recyclerView.adapter = systemAppAdapter
 
         systemAppAdapter.setOnItemClickListener { adapter, view, position ->

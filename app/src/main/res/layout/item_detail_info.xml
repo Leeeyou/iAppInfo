@@ -1,9 +1,10 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
     android:paddingLeft="12dp"
     android:paddingRight="12dp">
 
@@ -11,26 +12,27 @@
         android:id="@+id/desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/text_gray"
         android:textSize="16sp"
-        tool:text="PackageName"/>
+        tool:text="PackageName PackageName PackageName PackageName PackageName PackageName "/>
 
     <TextView
         android:id="@+id/value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/desc"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:ellipsize="end"
-        android:maxLines="1"
-        tool:text="com.leeeyou.appinfo"/>
+        android:maxLines="2"
+        android:textColor="@color/text_black"
+        android:textSize="14sp"
+        tool:text="com.leeeyou.appinfo.com.leeeyou.appinfo.com.leeeyou.appinfo.com.leeeyou.appinfo.com.leeeyou.appinfo.com.leeeyou.appinfo.com.leeeyou.appinfo.com.leeeyou.appinfo.com.leeeyou.appinfo."/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
         android:background="#e8e8e8"/>
-</RelativeLayout>
+</LinearLayout>
