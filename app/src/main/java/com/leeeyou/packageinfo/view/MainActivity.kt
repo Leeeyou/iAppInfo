@@ -8,8 +8,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
 import com.leeeyou.packageinfo.view.adapter.ViewPageAdapter
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(toolbar)
         tabLayout.setupWithViewPager(viewpager)
         viewpager.adapter = ViewPageAdapter(supportFragmentManager, loadApps(), tabLayout, toolbar)
         tabLayout.addTab(tabLayout.newTab().setText("SystemApp"), 0)
@@ -38,8 +42,9 @@ class MainActivity : AppCompatActivity() {
     private fun loadApps(): MutableList<AppInfo> {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
+
         val apps: MutableList<ResolveInfo> = packageManager.queryIntentActivities(intent, 0)
-        val appInfos: MutableList<AppInfo> = arrayListOf()
+        val appInfoList: MutableList<AppInfo> = arrayListOf()
 
         for (i in 0 until apps.size) {
             val info = apps[i]
@@ -64,10 +69,10 @@ class MainActivity : AppCompatActivity() {
             appInfo.signMD5 = getSignMd5Str(appInfo.packageName)
             appInfo.size = getApkSize(appInfo.packageName)
 
-            appInfos.add(appInfo)
+            appInfoList.add(appInfo)
         }
 
-        return appInfos
+        return appInfoList
     }
 
     private fun drawableToBitmap(drawable: Drawable): Bitmap {
@@ -128,5 +133,24 @@ class MainActivity : AppCompatActivity() {
     private fun getApkSize(packageName: String?): Long =
             File(packageManager.getApplicationInfo(packageName, 0).publicSourceDir).length()
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.github -> {
+            openGithub()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun openGithub() {
+        val intent = Intent()
+        intent.action = "android.intent.action.VIEW"
+        intent.data = Uri.parse("https://github.com/LeeeYou/AppInfo")
+        startActivity(intent)
+
+    }
 }

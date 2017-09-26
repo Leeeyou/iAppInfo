@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">AppInfo</string>
+
     <string name="clipSuccess">包名复制成功</string>
     <string name="clipSuccess2">复制成功</string>
+
     <string name="view_name_image_icon">imageIcon</string>
     <string name="view_name_text_title">textAppName</string>
 
@@ -13,4 +15,9 @@
     <string name="signMD5">signMD5</string>
     <string name="size">size</string>
     <string name="permissionCount">permissionCount</string>
+
+    <string name="detail_page_menu_open">open</string>
+    <string name="detail_page_menu_clip">clip</string>
+    <string name="app_page_menu_github">github</string>
+
 </resources>

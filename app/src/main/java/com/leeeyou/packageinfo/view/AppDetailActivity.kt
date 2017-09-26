@@ -1,18 +1,18 @@
 package com.leeeyou.packageinfo.view
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
 import android.text.ClipboardManager
 import android.text.format.Formatter
-import android.view.View
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.jaeger.library.StatusBarUtil
 import com.leeeyou.packageinfo.R
@@ -25,48 +25,21 @@ import java.util.*
 
 class AppDetailActivity : AppCompatActivity() {
 
+    private lateinit var appInfo: AppInfo
+    private lateinit var dataPair: ArrayList<Pair<String, String>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_detail)
 
-        val appInfo = intent.getParcelableExtra<AppInfo>("appInfo")
+        appInfo = intent.getParcelableExtra("appInfo")
 
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        setHeadViewStyle(appInfo)
+        transformData(appInfo)
+        initRecyclerView(dataPair)
+    }
 
-        val p = Palette.from(appInfo.icon).generate()
-        val dominantSwatch = p.dominantSwatch
-        if (dominantSwatch != null) {
-            collapsingToolbarLayout.setBackgroundColor(Color.argb(180, Color.red(dominantSwatch.rgb), Color.green(dominantSwatch.rgb), Color.blue(dominantSwatch.rgb)))
-            collapsingToolbarLayout.contentScrim = ColorDrawable(dominantSwatch.rgb)
-            StatusBarUtil.setColor(this, dominantSwatch.rgb, 140)
-        }
-
-        collapsingToolbarLayout.title = appInfo.appName
-
-        imgIcon.setImageBitmap(appInfo.icon)
-
-        imgIcon.setOnClickListener({
-            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this,
-                    android.support.v4.util.Pair<View, String>(imgIcon, getString(R.string.view_name_image_icon)))
-
-            val intent = Intent(this, MainActivity().javaClass)
-
-            ActivityCompat.startActivity(this, intent, activityOptions.toBundle())
-        })
-
-        val data = arrayListOf<Pair<String, String>>()
-
-        data.add(Pair(getString(R.string.packageName), appInfo.packageName!!))
-        data.add(Pair(getString(R.string.launcherActivity), appInfo.launcherActivity!!))
-        data.add(Pair(getString(R.string.versionName), appInfo.versionName!!))
-        data.add(Pair(getString(R.string.versionCode), appInfo.versionCode.toString()))
-        data.add(Pair(getString(R.string.installDate), DateFormat.getDateInstance().format(Date(appInfo.installDate!!.toLong()))))
-        data.add(Pair(getString(R.string.signMD5), appInfo.signMD5!!))
-        data.add(Pair(getString(R.string.size), Formatter.formatFileSize(this, appInfo.size!!.toLong())))
-        data.add(Pair(getString(R.string.permissionCount), appInfo.permissionCount.toString()))
-
+    private fun initRecyclerView(data: ArrayList<Pair<String, String>>) {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val appDetailInfoAdapter = AppDetailInfoAdapter(R.layout.item_detail_info, data)
@@ -77,9 +50,76 @@ class AppDetailActivity : AppCompatActivity() {
 
             val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             cm.text = pair.second.toString()
+
             Toast.makeText(this, R.string.clipSuccess2, Toast.LENGTH_SHORT).show()
             true
         }
+    }
+
+    private fun transformData(appInfo: AppInfo) {
+        dataPair = arrayListOf()
+        dataPair.add(Pair(getString(R.string.packageName), appInfo.packageName!!))
+        dataPair.add(Pair(getString(R.string.launcherActivity), appInfo.launcherActivity!!))
+        dataPair.add(Pair(getString(R.string.versionName), appInfo.versionName!!))
+        dataPair.add(Pair(getString(R.string.versionCode), appInfo.versionCode.toString()))
+        dataPair.add(Pair(getString(R.string.installDate), DateFormat.getDateInstance().format(Date(appInfo.installDate!!.toLong()))))
+        dataPair.add(Pair(getString(R.string.signMD5), appInfo.signMD5!!))
+        dataPair.add(Pair(getString(R.string.size), Formatter.formatFileSize(this, appInfo.size!!.toLong())))
+        dataPair.add(Pair(getString(R.string.permissionCount), appInfo.permissionCount.toString()))
+    }
+
+    private fun setHeadViewStyle(appInfo: AppInfo) {
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        collapsingToolbarLayout.title = appInfo.appName
+
+        val p = Palette.from(appInfo.icon).generate()
+        val dominantSwatch = p.dominantSwatch
+        if (dominantSwatch != null) {
+            collapsingToolbarLayout.setBackgroundColor(Color.argb(180, Color.red(dominantSwatch.rgb), Color.green(dominantSwatch.rgb), Color.blue(dominantSwatch.rgb)))
+            collapsingToolbarLayout.contentScrim = ColorDrawable(dominantSwatch.rgb)
+            StatusBarUtil.setColor(this, dominantSwatch.rgb, 140)
+        }
+
+        imgIcon.setImageBitmap(appInfo.icon)
+        imgIcon.setOnClickListener({
+            finish()
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.detail_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.open -> {
+            openApp()
+            true
+        }
+        R.id.clip -> {
+            clipAppInfo()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun clipAppInfo() {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("appName").append("\n").append(appInfo.appName).append("\n")
+        dataPair.forEach { stringBuilder.append(it.first).append("\n").append(it.second).append("\n") }
+
+        val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        cm.text = stringBuilder.toString()
+        Toast.makeText(this, R.string.clipSuccess2, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openApp() {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        intent.component = ComponentName(appInfo.packageName, appInfo.launcherActivity)
+        startActivity(intent)
     }
 
 }
