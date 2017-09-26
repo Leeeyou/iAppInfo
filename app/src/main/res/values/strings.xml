@@ -2,4 +2,13 @@
     <string name="app_name">AppInfo</string>
     <string name="clipSuccess">包名复制成功</string>
     <string name="view_name_image_icon">imageIcon</string>
+
+    <string name="packageName">packageName</string>
+    <string name="launcherActivity">launcherActivity</string>
+    <string name="versionName">versionName</string>
+    <string name="versionCode">versionCode</string>
+    <string name="installDate">installDate</string>
+    <string name="signMD5">signMD5</string>
+    <string name="size">size</string>
+    <string name="permissionCount">permissionCount</string>
 </resources>

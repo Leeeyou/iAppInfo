@@ -83,18 +83,17 @@ class AppInfoFragment() : Fragment() {
                     tabLayout.setSelectedTabIndicatorColor(selectColor)
                     toolbar.setTitleTextColor(selectColor)
                 }
-
-                val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        activity,
-                        android.support.v4.util.Pair<View, String>(view.findViewById(R.id.imgIcon), getString(R.string.view_name_image_icon)))
-
-                val intent = Intent(context, AppDetailActivity().javaClass)
-                intent.putExtra("appInfo", appInfo)
-                intent.putExtra("position", position)
-
-                ActivityCompat.startActivity(activity, intent, activityOptions.toBundle())
-
             }
+
+            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    activity,
+                    android.support.v4.util.Pair<View, String>(view.findViewById(R.id.imgIcon), getString(R.string.view_name_image_icon)))
+
+            val intent = Intent(context, AppDetailActivity().javaClass)
+            intent.putExtra("appInfo", appInfo)
+            intent.putExtra("position", position)
+
+            ActivityCompat.startActivity(activity, intent, activityOptions.toBundle())
         }
 
         systemAppAdapter.setOnItemLongClickListener { adapter, _, position ->
