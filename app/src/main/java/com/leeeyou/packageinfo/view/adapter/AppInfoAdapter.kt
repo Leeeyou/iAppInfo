@@ -15,7 +15,7 @@ class AppInfoAdapter(layoutResId: Int, data: List<AppInfo>) : BaseQuickAdapter<A
 
     override fun convert(helper: BaseViewHolder?, item: AppInfo?) {
         helper!!.setText(R.id.name, item!!.appName)
-                .setImageDrawable(R.id.imgIcon, item.icon)
+                .setImageBitmap(R.id.imgIcon, item.icon)
                 .setText(R.id.activity, item.packageName)
     }
 

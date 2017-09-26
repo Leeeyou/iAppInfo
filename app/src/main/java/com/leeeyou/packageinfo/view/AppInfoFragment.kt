@@ -2,13 +2,11 @@ package com.leeeyou.packageinfo.view
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.PixelFormat
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
@@ -32,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_system_app.*
  * the app info list fragment
  */
 class AppInfoFragment() : Fragment() {
+
     private lateinit var mList: MutableList<AppInfo>
     private lateinit var tabLayout: TabLayout
     private lateinit var toolbar: Toolbar
@@ -62,10 +61,10 @@ class AppInfoFragment() : Fragment() {
         val systemAppAdapter = AppInfoAdapter(R.layout.item_packageinfo, mList.filter(predicate))
         recyclerView.adapter = systemAppAdapter
 
-        systemAppAdapter.setOnItemClickListener { adapter, _, position ->
+        systemAppAdapter.setOnItemClickListener { adapter, view, position ->
             val appInfo: AppInfo = adapter.getItem(position) as AppInfo
-            val drawableToBitmap = drawableToBitmap(appInfo.icon!!)
-            Palette.from(drawableToBitmap).generate {
+
+            Palette.from(appInfo.icon).generate {
                 val dominantSwatch = it.dominantSwatch
                 if (dominantSwatch != null) {
                     tabLayout.setBackgroundColor(dominantSwatch.rgb)
@@ -85,7 +84,16 @@ class AppInfoFragment() : Fragment() {
                     toolbar.setTitleTextColor(selectColor)
                 }
 
-                startActivity(Intent(context, AppDetailActivity().javaClass))
+                val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        activity,
+                        android.support.v4.util.Pair<View, String>(view.findViewById(R.id.imgIcon), getString(R.string.view_name_image_icon)))
+
+                val intent = Intent(context, AppDetailActivity().javaClass)
+                intent.putExtra("appInfo", appInfo)
+                intent.putExtra("position", position)
+
+                ActivityCompat.startActivity(activity, intent, activityOptions.toBundle())
+
             }
         }
 
@@ -98,16 +106,6 @@ class AppInfoFragment() : Fragment() {
             true
         }
 
-    }
 
-    private fun drawableToBitmap(drawable: Drawable): Bitmap {
-        val bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth,
-                drawable.intrinsicHeight,
-                if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        drawable.draw(canvas)
-        return bitmap
     }
 }

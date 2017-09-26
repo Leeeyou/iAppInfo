@@ -4,7 +4,7 @@
     android:id="@+id/rlAppInfo"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-    android:background="@drawable/selector_click"
+    android:background="?android:attr/selectableItemBackground"
     android:paddingLeft="12dp"
     android:paddingRight="12dp"
     android:paddingTop="12dp">
@@ -14,7 +14,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher"
+        android:transitionName="@string/view_name_image_icon"/>
 
     <TextView
         android:id="@+id/name"

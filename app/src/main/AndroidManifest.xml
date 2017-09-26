@@ -9,14 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity">
+        <activity
+            android:name=".view.MainActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ActivityTransitionTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.AppDetailActivity">
+        <activity
+            android:name=".view.AppDetailActivity"
+            android:theme="@style/ActivityTransitionTheme">
         </activity>
     </application>
 

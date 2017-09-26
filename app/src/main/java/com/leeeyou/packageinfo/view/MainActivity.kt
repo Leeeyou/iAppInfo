@@ -4,6 +4,10 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.PixelFormat
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.leeeyou.packageinfo.R
@@ -45,8 +49,7 @@ class MainActivity : AppCompatActivity() {
             appInfo.packageName = info.activityInfo.packageName
             appInfo.launcherActivity = info.activityInfo.name
             appInfo.appName = info.activityInfo.loadLabel(packageManager) as String?
-            appInfo.icon = info.activityInfo.loadIcon(packageManager)
-            appInfo.logo = info.activityInfo.loadLogo(packageManager)
+            appInfo.icon = drawableToBitmap(info.activityInfo.loadIcon(packageManager))
 
             val applicationInfo = packageManager.getApplicationInfo(appInfo.packageName, 0)
             appInfo.isSystemApp = applicationInfo.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
@@ -65,6 +68,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         return appInfos
+    }
+
+    private fun drawableToBitmap(drawable: Drawable): Bitmap {
+        val bitmap = Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+        drawable.draw(canvas)
+        return bitmap
     }
 
     /**
