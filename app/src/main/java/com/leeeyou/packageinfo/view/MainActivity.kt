@@ -3,19 +3,20 @@ package com.leeeyou.packageinfo.view
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.PixelFormat
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
+import com.leeeyou.packageinfo.drawableToBitmap
+import com.leeeyou.packageinfo.openGithub
 import com.leeeyou.packageinfo.view.adapter.ViewPageAdapter
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.security.MessageDigest
@@ -28,62 +29,67 @@ import java.security.NoSuchAlgorithmException
  */
 class MainActivity : AppCompatActivity() {
 
+    private var appInfoList: MutableList<AppInfo> = arrayListOf()
+//    private lateinit var viewPageAdapter: ViewPageAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
-        tabLayout.setupWithViewPager(viewpager)
-        viewpager.adapter = ViewPageAdapter(supportFragmentManager, loadApps(), tabLayout, toolbar)
+
         tabLayout.addTab(tabLayout.newTab().setText("SystemApp"), 0)
         tabLayout.addTab(tabLayout.newTab().setText("UserApp"), 1)
+        tabLayout.setupWithViewPager(viewpager)
+
+        loadApps()
     }
 
-    private fun loadApps(): MutableList<AppInfo> {
+    private fun loadApps() {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
 
-        val apps: MutableList<ResolveInfo> = packageManager.queryIntentActivities(intent, 0)
-        val appInfoList: MutableList<AppInfo> = arrayListOf()
+        Observable.fromArray(packageManager.queryIntentActivities(intent, 0))
+                .map {
+                    it.forEach {
+                        val appInfo = AppInfo()
 
-        for (i in 0 until apps.size) {
-            val info = apps[i]
+                        appInfo.packageName = it.activityInfo.packageName
+                        appInfo.launcherActivity = it.activityInfo.name
+                        appInfo.appName = it.activityInfo.loadLabel(packageManager) as String?
+                        appInfo.icon = drawableToBitmap(it.activityInfo.loadIcon(packageManager))
 
-            val appInfo = AppInfo()
+                        val applicationInfo = packageManager.getApplicationInfo(appInfo.packageName, 0)
+                        appInfo.isSystemApp = applicationInfo.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
 
-            appInfo.packageName = info.activityInfo.packageName
-            appInfo.launcherActivity = info.activityInfo.name
-            appInfo.appName = info.activityInfo.loadLabel(packageManager) as String?
-            appInfo.icon = drawableToBitmap(info.activityInfo.loadIcon(packageManager))
+                        val packageInfo = packageManager.getPackageInfo(appInfo.packageName, PackageManager.GET_PERMISSIONS)
+                        appInfo.versionCode = packageInfo.versionCode
+                        appInfo.versionName = packageInfo.versionName
 
-            val applicationInfo = packageManager.getApplicationInfo(appInfo.packageName, 0)
-            appInfo.isSystemApp = applicationInfo.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
+                        appInfo.installDate = packageInfo.firstInstallTime
+                        appInfo.permissionCount = packageInfo.requestedPermissions?.size
 
-            val packageInfo = packageManager.getPackageInfo(appInfo.packageName, PackageManager.GET_PERMISSIONS)
-            appInfo.versionCode = packageInfo.versionCode
-            appInfo.versionName = packageInfo.versionName
+                        appInfo.signMD5 = getSignMd5Str(appInfo.packageName)
+                        appInfo.size = getApkSize(appInfo.packageName)
 
-            appInfo.installDate = packageInfo.firstInstallTime
-            appInfo.permissionCount = packageInfo.requestedPermissions?.size
+                        appInfoList.add(appInfo)
+                    }
+                    return@map appInfoList
+                }
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onError = {
+                            Log.e("onError", it.printStackTrace().toString())
+                        },
+                        onComplete = {
+                            viewpager.adapter = ViewPageAdapter(supportFragmentManager, appInfoList, tabLayout, toolbar)
+                            tabLayout.getTabAt(0)!!.text = "SystemApp"
+                            tabLayout.getTabAt(1)!!.text = "UserApp"
+                        }
 
-            appInfo.signMD5 = getSignMd5Str(appInfo.packageName)
-            appInfo.size = getApkSize(appInfo.packageName)
+                )
 
-            appInfoList.add(appInfo)
-        }
-
-        return appInfoList
-    }
-
-    private fun drawableToBitmap(drawable: Drawable): Bitmap {
-        val bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth,
-                drawable.intrinsicHeight,
-                if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        drawable.draw(canvas)
-        return bitmap
     }
 
     /**
@@ -140,17 +146,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.github -> {
-            openGithub()
+            openGithub("https://github.com/LeeeYou/AppInfo")
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun openGithub() {
-        val intent = Intent()
-        intent.action = "android.intent.action.VIEW"
-        intent.data = Uri.parse("https://github.com/LeeeYou/AppInfo")
-        startActivity(intent)
-
-    }
 }
+

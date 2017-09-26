@@ -1,6 +1,5 @@
 package com.leeeyou.packageinfo.view
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -11,15 +10,15 @@ import android.support.v4.app.Fragment
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
-import android.text.ClipboardManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.jaeger.library.StatusBarUtil
 import com.leeeyou.packageinfo.Constant
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
+import com.leeeyou.packageinfo.copyToClipboard
+import com.leeeyou.packageinfo.toast
 import com.leeeyou.packageinfo.view.adapter.AppInfoAdapter
 import kotlinx.android.synthetic.main.fragment_system_app.*
 
@@ -99,9 +98,8 @@ class AppInfoFragment() : Fragment() {
         systemAppAdapter.setOnItemLongClickListener { adapter, _, position ->
             val appInfo: AppInfo = adapter.getItem(position) as AppInfo
 
-            val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            cm.text = appInfo.packageName
-            Toast.makeText(context, R.string.clipSuccess, Toast.LENGTH_SHORT).show()
+            activity.copyToClipboard(appInfo.packageName!!)
+            activity.toast(R.string.clipSuccess)
             true
         }
 

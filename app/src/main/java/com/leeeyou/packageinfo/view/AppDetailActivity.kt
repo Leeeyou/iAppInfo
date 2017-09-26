@@ -1,27 +1,24 @@
 package com.leeeyou.packageinfo.view
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
-import android.text.ClipboardManager
 import android.text.format.Formatter
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.jaeger.library.StatusBarUtil
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
+import com.leeeyou.packageinfo.copyToClipboard
+import com.leeeyou.packageinfo.openApp
+import com.leeeyou.packageinfo.toast
 import com.leeeyou.packageinfo.view.adapter.AppDetailInfoAdapter
 import kotlinx.android.synthetic.main.activity_app_detail.*
 import java.text.DateFormat
 import java.util.*
-
 
 class AppDetailActivity : AppCompatActivity() {
 
@@ -48,10 +45,8 @@ class AppDetailActivity : AppCompatActivity() {
         appDetailInfoAdapter.setOnItemLongClickListener { adapter, _, position ->
             val pair = adapter.getItem(position) as Pair<*, *>
 
-            val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            cm.text = pair.second.toString()
-
-            Toast.makeText(this, R.string.clipSuccess2, Toast.LENGTH_SHORT).show()
+            copyToClipboard(pair.second.toString())
+            toast(R.string.clipSuccess2)
             true
         }
     }
@@ -95,7 +90,7 @@ class AppDetailActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.open -> {
-            openApp()
+            openApp(appInfo.packageName!!, appInfo.launcherActivity!!)
             true
         }
         R.id.clip -> {
@@ -110,16 +105,8 @@ class AppDetailActivity : AppCompatActivity() {
         stringBuilder.append("appName").append("\n").append(appInfo.appName).append("\n")
         dataPair.forEach { stringBuilder.append(it.first).append("\n").append(it.second).append("\n") }
 
-        val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.text = stringBuilder.toString()
-        Toast.makeText(this, R.string.clipSuccess2, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun openApp() {
-        val intent = Intent(Intent.ACTION_MAIN)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        intent.component = ComponentName(appInfo.packageName, appInfo.launcherActivity)
-        startActivity(intent)
+        copyToClipboard(stringBuilder.toString())
+        toast(R.string.clipSuccess2)
     }
 
 }
