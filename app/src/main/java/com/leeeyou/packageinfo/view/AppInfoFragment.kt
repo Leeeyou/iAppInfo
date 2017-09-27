@@ -1,6 +1,7 @@
 package com.leeeyou.packageinfo.view
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -60,10 +61,10 @@ class AppInfoFragment() : Fragment() {
         val systemAppAdapter = AppInfoAdapter(R.layout.item_app_info, mList.filter(predicate))
         recyclerView.adapter = systemAppAdapter
 
-        systemAppAdapter.setOnItemClickListener { adapter, view, position ->
+        systemAppAdapter.setOnItemClickListener { adapter, subView, position ->
             val appInfo: AppInfo = adapter.getItem(position) as AppInfo
 
-            Palette.from(appInfo.icon).generate {
+            Palette.from(BitmapFactory.decodeFile(appInfo.iconUrl)).generate {
                 val dominantSwatch = it.dominantSwatch
                 if (dominantSwatch != null) {
                     tabLayout.setBackgroundColor(dominantSwatch.rgb)
@@ -84,15 +85,18 @@ class AppInfoFragment() : Fragment() {
                 }
             }
 
-            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    activity,
-                    android.support.v4.util.Pair<View, String>(view.findViewById(R.id.imgIcon), getString(R.string.view_name_image_icon)))
+//            activity.initHawk()
+//            Hawk.put("selectAppInfo", appInfo)
 
-            val intent = Intent(context, AppDetailActivity().javaClass)
-            intent.putExtra("appInfo", appInfo)
-            intent.putExtra("position", position)
-
-            ActivityCompat.startActivity(activity, intent, activityOptions.toBundle())
+            ActivityCompat.startActivity(activity,
+                    Intent(context, AppDetailActivity::class.java).putExtra("appInfo", appInfo),
+                    ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(
+                                    activity,
+                                    android.support.v4.util.Pair<View, String>(
+                                            subView.findViewById(R.id.imgIcon), getString(R.string.view_name_image_icon)
+                                    ))
+                            .toBundle())
         }
 
         systemAppAdapter.setOnItemLongClickListener { adapter, _, position ->

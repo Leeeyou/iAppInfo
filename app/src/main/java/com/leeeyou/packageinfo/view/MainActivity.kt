@@ -3,7 +3,9 @@ package com.leeeyou.packageinfo.view
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
@@ -18,7 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
+import java.io.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -30,7 +32,7 @@ import java.security.NoSuchAlgorithmException
 class MainActivity : AppCompatActivity() {
 
     private var appInfoList: MutableList<AppInfo> = arrayListOf()
-//    private lateinit var viewPageAdapter: ViewPageAdapter
+    private val mAppDir = File(Environment.getExternalStorageDirectory(), "AppInfo")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                         appInfo.packageName = it.activityInfo.packageName
                         appInfo.launcherActivity = it.activityInfo.name
                         appInfo.appName = it.activityInfo.loadLabel(packageManager) as String?
-                        appInfo.icon = drawableToBitmap(it.activityInfo.loadIcon(packageManager))
+                        appInfo.iconUrl = saveBitmapToLocal(drawableToBitmap(it.activityInfo.loadIcon(packageManager)))
 
                         val applicationInfo = packageManager.getApplicationInfo(appInfo.packageName, 0)
                         appInfo.isSystemApp = applicationInfo.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
@@ -150,6 +152,25 @@ class MainActivity : AppCompatActivity() {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun saveBitmapToLocal(bmp: Bitmap): String {
+        if (!mAppDir.exists()) {
+            mAppDir.mkdir()
+        }
+        val file = File(mAppDir, System.currentTimeMillis().toString() + ".png")
+        try {
+            val fos = BufferedOutputStream(FileOutputStream(file))
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            fos.flush()
+            fos.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return file.absolutePath
     }
 
 }

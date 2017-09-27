@@ -1,7 +1,9 @@
 package com.leeeyou.packageinfo.view
 
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
@@ -17,8 +19,10 @@ import com.leeeyou.packageinfo.openApp
 import com.leeeyou.packageinfo.toast
 import com.leeeyou.packageinfo.view.adapter.AppDetailInfoAdapter
 import kotlinx.android.synthetic.main.activity_app_detail.*
+import java.io.File
 import java.text.DateFormat
 import java.util.*
+
 
 class AppDetailActivity : AppCompatActivity() {
 
@@ -29,6 +33,8 @@ class AppDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_detail)
 
+//        initHawk()
+//        appInfo = Hawk.get<AppInfo>("selectAppInfo")
         appInfo = intent.getParcelableExtra("appInfo")
 
         setHeadViewStyle(appInfo)
@@ -69,7 +75,7 @@ class AppDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         collapsingToolbarLayout.title = appInfo.appName
 
-        val p = Palette.from(appInfo.icon).generate()
+        val p = Palette.from(BitmapFactory.decodeFile(appInfo.iconUrl)).generate()
         val dominantSwatch = p.dominantSwatch
         if (dominantSwatch != null) {
             collapsingToolbarLayout.setBackgroundColor(Color.argb(180, Color.red(dominantSwatch.rgb), Color.green(dominantSwatch.rgb), Color.blue(dominantSwatch.rgb)))
@@ -77,7 +83,7 @@ class AppDetailActivity : AppCompatActivity() {
             StatusBarUtil.setColor(this, dominantSwatch.rgb, 140)
         }
 
-        imgIcon.setImageBitmap(appInfo.icon)
+        imgIcon.setImageURI(Uri.fromFile(File(appInfo.iconUrl)))
         imgIcon.setOnClickListener({
             super.onBackPressed()
         })
@@ -113,4 +119,6 @@ class AppDetailActivity : AppCompatActivity() {
         toast(R.string.clipSuccess2)
     }
 
+
 }
+

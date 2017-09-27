@@ -1,6 +1,5 @@
 package com.leeeyou.packageinfo.bean
 
-import android.graphics.Bitmap
 import android.os.Parcel
 import android.os.Parcelable
 
@@ -12,7 +11,7 @@ import android.os.Parcelable
 data class AppInfo(var packageName: String? = null,
                    var launcherActivity: String? = null,
                    var appName: String? = null,
-                   var icon: Bitmap? = null,
+                   var iconUrl: String? = null,
                    var isSystemApp: Boolean? = null,
                    var versionCode: Int? = 0,
                    var versionName: String? = null,
@@ -21,12 +20,11 @@ data class AppInfo(var packageName: String? = null,
                    var signSHA: String? = null,
                    var size: Long? = 0,
                    var permissionCount: Int? = 0) : Parcelable {
-
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readParcelable(Bitmap::class.java.classLoader),
+            parcel.readString(),
             parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readValue(Int::class.java.classLoader) as? Int,
             parcel.readString(),
@@ -40,7 +38,7 @@ data class AppInfo(var packageName: String? = null,
         parcel.writeString(packageName)
         parcel.writeString(launcherActivity)
         parcel.writeString(appName)
-        parcel.writeParcelable(icon, flags)
+        parcel.writeString(iconUrl)
         parcel.writeValue(isSystemApp)
         parcel.writeValue(versionCode)
         parcel.writeString(versionName)
@@ -58,5 +56,6 @@ data class AppInfo(var packageName: String? = null,
 
         override fun newArray(size: Int): Array<AppInfo?> = arrayOfNulls(size)
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.leeeyou.packageinfo.view.adapter
 
+import android.graphics.BitmapFactory
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.leeeyou.packageinfo.R
@@ -15,7 +16,7 @@ class AppInfoAdapter(layoutResId: Int, data: List<AppInfo>) : BaseQuickAdapter<A
 
     override fun convert(helper: BaseViewHolder?, item: AppInfo?) {
         helper!!.setText(R.id.name, item!!.appName)
-                .setImageBitmap(R.id.imgIcon, item.icon)
+                .setImageBitmap(R.id.imgIcon, BitmapFactory.decodeFile(item.iconUrl))
                 .setText(R.id.activity, item.packageName)
     }
 
