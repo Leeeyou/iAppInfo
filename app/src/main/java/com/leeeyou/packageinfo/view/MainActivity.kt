@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.afollestad.materialdialogs.MaterialDialog
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
 import com.leeeyou.packageinfo.drawableToBitmap
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private var appInfoList: MutableList<AppInfo> = arrayListOf()
     private val mAppDir = File(Environment.getExternalStorageDirectory(), "AppInfo")
+    private var mMaterialDialog: MaterialDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,15 +81,28 @@ class MainActivity : AppCompatActivity() {
                     return@map appInfoList
                 }
                 .subscribeOn(Schedulers.newThread())
+                .doOnSubscribe(
+                        {
+                            mMaterialDialog = MaterialDialog.Builder(this)
+                                    .content("正在解析应用...")
+                                    .progress(true, 0)
+                                    .progressIndeterminateStyle(true)
+                                    .show()
+                        }
+
+                )
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onError = {
+                            mMaterialDialog!!.dismiss()
                             Log.e("onError", it.printStackTrace().toString())
                         },
                         onComplete = {
                             viewpager.adapter = ViewPageAdapter(supportFragmentManager, appInfoList, tabLayout, toolbar)
                             tabLayout.getTabAt(0)!!.text = "SystemApp"
                             tabLayout.getTabAt(1)!!.text = "UserApp"
+                            mMaterialDialog!!.dismiss()
                         }
 
                 )

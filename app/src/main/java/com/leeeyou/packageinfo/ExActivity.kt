@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.text.ClipboardManager
 import android.widget.Toast
-import com.orhanobut.hawk.Hawk
 
 /**
  * Created by leeeyou on 2017/9/26.
@@ -53,8 +52,4 @@ fun Activity.openGithub(url: String) {
     intent.action = "android.intent.action.VIEW"
     intent.data = Uri.parse(url)
     startActivity(intent)
-}
-
-fun Activity.initHawk() {
-    Hawk.init(this).build()
 }
