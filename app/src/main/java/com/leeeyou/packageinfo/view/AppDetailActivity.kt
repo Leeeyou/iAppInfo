@@ -79,7 +79,7 @@ class AppDetailActivity : AppCompatActivity() {
 
         imgIcon.setImageBitmap(appInfo.icon)
         imgIcon.setOnClickListener({
-            finish()
+            super.onBackPressed()
         })
     }
 
@@ -95,6 +95,10 @@ class AppDetailActivity : AppCompatActivity() {
         }
         R.id.clip -> {
             clipAppInfo()
+            true
+        }
+        android.R.id.home -> {
+            super.onBackPressed()
             true
         }
         else -> super.onOptionsItemSelected(item)
