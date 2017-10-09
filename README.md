@@ -78,4 +78,6 @@ Activity转场动画效果主要是通过ActivityCompat配合ActivityOptionsComp
 ① android.os.TransactionTooLargeException: data parcel size 1293724 bytes   
 ② https://stackoverflow.com/questions/43807056/rx-kotlin-map-function-cant-infer-return-type    
 ③ http://www.jianshu.com/p/255e2db67147 tablayout标题不见的问题    
-④ http://blog.csdn.net/xiaochuanding/article/details/53727426   
+④ http://blog.csdn.net/xiaochuanding/article/details/53727426  
+
+**[⬆ back to top](#table-of-contents)**
