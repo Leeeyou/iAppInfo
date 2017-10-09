@@ -80,4 +80,4 @@ Activity转场动画效果主要是通过ActivityCompat配合ActivityOptionsComp
 ③ http://www.jianshu.com/p/255e2db67147 tablayout标题不见的问题    
 ④ http://blog.csdn.net/xiaochuanding/article/details/53727426  
 
-**[⬆ back to top](# 1 关于Material-Design风格的几点说明)**
+**[⬆ back to top](# 1-关于Material-Design风格的几点说明)**
