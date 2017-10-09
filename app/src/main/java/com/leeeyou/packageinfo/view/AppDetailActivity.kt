@@ -73,18 +73,20 @@ class AppDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         collapsingToolbarLayout.title = appInfo.appName
 
-        val p = Palette.from(BitmapFactory.decodeFile(appInfo.iconUrl)).generate()
-        val dominantSwatch = p.dominantSwatch
-        if (dominantSwatch != null) {
-            collapsingToolbarLayout.setBackgroundColor(Color.argb(180, Color.red(dominantSwatch.rgb), Color.green(dominantSwatch.rgb), Color.blue(dominantSwatch.rgb)))
-            collapsingToolbarLayout.contentScrim = ColorDrawable(dominantSwatch.rgb)
-            StatusBarUtil.setColor(this, dominantSwatch.rgb, 140)
-        }
+        if (File(appInfo.iconUrl).exists()) {
+            val p = Palette.from(BitmapFactory.decodeFile(appInfo.iconUrl)).generate()
+            val dominantSwatch = p.dominantSwatch
+            if (dominantSwatch != null) {
+                collapsingToolbarLayout.setBackgroundColor(Color.argb(180, Color.red(dominantSwatch.rgb), Color.green(dominantSwatch.rgb), Color.blue(dominantSwatch.rgb)))
+                collapsingToolbarLayout.contentScrim = ColorDrawable(dominantSwatch.rgb)
+                StatusBarUtil.setColor(this, dominantSwatch.rgb, 140)
+            }
 
-        imgIcon.setImageURI(Uri.fromFile(File(appInfo.iconUrl)))
-        imgIcon.setOnClickListener({
-            super.onBackPressed()
-        })
+            imgIcon.setImageURI(Uri.fromFile(File(appInfo.iconUrl)))
+            imgIcon.setOnClickListener({
+                super.onBackPressed()
+            })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

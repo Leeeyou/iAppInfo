@@ -22,6 +22,7 @@ import com.leeeyou.packageinfo.copyToClipboard
 import com.leeeyou.packageinfo.toast
 import com.leeeyou.packageinfo.view.adapter.AppInfoAdapter
 import kotlinx.android.synthetic.main.fragment_system_app.*
+import java.io.File
 
 
 /**
@@ -64,29 +65,31 @@ class AppInfoFragment() : Fragment() {
         systemAppAdapter.setOnItemClickListener { adapter, subView, position ->
             val appInfo: AppInfo = adapter.getItem(position) as AppInfo
 
-            Palette.from(BitmapFactory.decodeFile(appInfo.iconUrl)).generate {
-                val dominantSwatch = it.dominantSwatch
-                if (dominantSwatch != null) {
-                    tabLayout.setBackgroundColor(dominantSwatch.rgb)
-                    toolbar.setBackgroundColor(dominantSwatch.rgb)
-                    StatusBarUtil.setColor(activity, dominantSwatch.rgb, 80)
-                }
+            if (File(appInfo.iconUrl).exists()) {
+                Palette.from(BitmapFactory.decodeFile(appInfo.iconUrl)).generate {
+                    val dominantSwatch = it.dominantSwatch
+                    if (dominantSwatch != null) {
+                        tabLayout.setBackgroundColor(dominantSwatch.rgb)
+                        toolbar.setBackgroundColor(dominantSwatch.rgb)
+                        StatusBarUtil.setColor(activity, dominantSwatch.rgb, 80)
+                    }
 
-                val lightVibrantSwatch = it.lightVibrantSwatch
-                if (lightVibrantSwatch != null) {
-                    val darkColor = lightVibrantSwatch.bodyTextColor
+                    val lightVibrantSwatch = it.lightVibrantSwatch
+                    if (lightVibrantSwatch != null) {
+                        val darkColor = lightVibrantSwatch.bodyTextColor
 
-                    val selectColor = Color.rgb(Math.abs(Color.red(darkColor) - 255),
-                            Math.abs(Color.green(darkColor) - 255),
-                            Math.abs(Color.blue(darkColor) - 255))
-                    val normalColor = Color.argb(126,
-                            Math.abs(Color.red(darkColor) - 255),
-                            Math.abs(Color.green(darkColor) - 255),
-                            Math.abs(Color.blue(darkColor) - 255))
+                        val selectColor = Color.rgb(Math.abs(Color.red(darkColor) - 255),
+                                Math.abs(Color.green(darkColor) - 255),
+                                Math.abs(Color.blue(darkColor) - 255))
+                        val normalColor = Color.argb(126,
+                                Math.abs(Color.red(darkColor) - 255),
+                                Math.abs(Color.green(darkColor) - 255),
+                                Math.abs(Color.blue(darkColor) - 255))
 
-                    tabLayout.setTabTextColors(normalColor, selectColor)
-                    tabLayout.setSelectedTabIndicatorColor(selectColor)
-                    toolbar.setTitleTextColor(selectColor)
+                        tabLayout.setTabTextColors(normalColor, selectColor)
+                        tabLayout.setSelectedTabIndicatorColor(selectColor)
+                        toolbar.setTitleTextColor(selectColor)
+                    }
                 }
             }
 

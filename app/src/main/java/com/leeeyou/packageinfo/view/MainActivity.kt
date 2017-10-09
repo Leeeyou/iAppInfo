@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                         appInfo.packageName = it.activityInfo.packageName
                         appInfo.launcherActivity = it.activityInfo.name
                         appInfo.appName = it.activityInfo.loadLabel(packageManager) as String?
-                        appInfo.iconUrl = saveBitmapToLocal(drawableToBitmap(it.activityInfo.loadIcon(packageManager)))
+                        appInfo.iconUrl = saveBitmapToLocal(appInfo.packageName, drawableToBitmap(it.activityInfo.loadIcon(packageManager)))
 
                         val applicationInfo = packageManager.getApplicationInfo(appInfo.packageName, 0)
                         appInfo.isSystemApp = applicationInfo.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
@@ -168,11 +168,16 @@ class MainActivity : AppCompatActivity() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun saveBitmapToLocal(bmp: Bitmap): String {
+    private fun saveBitmapToLocal(packageName: String?, bmp: Bitmap): String {
         if (!mAppDir.exists()) {
             mAppDir.mkdir()
         }
-        val file = File(mAppDir, System.currentTimeMillis().toString() + ".png")
+
+        val file = File(mAppDir, packageName + ".png")
+        if (file.exists()) {
+            return file.absolutePath
+        }
+
         try {
             val fos = BufferedOutputStream(FileOutputStream(file))
             bmp.compress(Bitmap.CompressFormat.PNG, 100, fos)
