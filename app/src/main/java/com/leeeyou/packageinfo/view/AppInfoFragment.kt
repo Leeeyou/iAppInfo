@@ -76,17 +76,19 @@ class AppInfoFragment() : Fragment() {
                 if (lightVibrantSwatch != null) {
                     val darkColor = lightVibrantSwatch.bodyTextColor
 
-                    val selectColor = Color.rgb(Math.abs(Color.red(darkColor) - 255), Math.abs(Color.green(darkColor) - 255), Math.abs(Color.blue(darkColor) - 255))
-                    val normalColor = Color.argb(126, Math.abs(Color.red(darkColor) - 255), Math.abs(Color.green(darkColor) - 255), Math.abs(Color.blue(darkColor) - 255))
+                    val selectColor = Color.rgb(Math.abs(Color.red(darkColor) - 255),
+                            Math.abs(Color.green(darkColor) - 255),
+                            Math.abs(Color.blue(darkColor) - 255))
+                    val normalColor = Color.argb(126,
+                            Math.abs(Color.red(darkColor) - 255),
+                            Math.abs(Color.green(darkColor) - 255),
+                            Math.abs(Color.blue(darkColor) - 255))
 
                     tabLayout.setTabTextColors(normalColor, selectColor)
                     tabLayout.setSelectedTabIndicatorColor(selectColor)
                     toolbar.setTitleTextColor(selectColor)
                 }
             }
-
-//            activity.initHawk()
-//            Hawk.put("selectAppInfo", appInfo)
 
             ActivityCompat.startActivity(activity,
                     Intent(context, AppDetailActivity::class.java).putExtra("appInfo", appInfo),

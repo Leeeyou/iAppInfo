@@ -33,8 +33,6 @@ class AppDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_detail)
 
-//        initHawk()
-//        appInfo = Hawk.get<AppInfo>("selectAppInfo")
         appInfo = intent.getParcelableExtra("appInfo")
 
         setHeadViewStyle(appInfo)

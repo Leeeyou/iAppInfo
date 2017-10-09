@@ -104,7 +104,6 @@ class MainActivity : AppCompatActivity() {
                             tabLayout.getTabAt(1)!!.text = "UserApp"
                             mMaterialDialog!!.dismiss()
                         }
-
                 )
 
     }
