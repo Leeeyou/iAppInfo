@@ -1,6 +1,7 @@
 # AppInfo中的技术说明
 ## 1、关于Material Design风格的几点说明
-状态栏透明+Toolbar滚入滚出+TabLayout悬停效果
+
+状态栏透明+Toolbar滚入滚出+TabLayout悬停效果     
 ![整体效果](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/mainpage.gif)
 
 ### 1.1 主体框架介绍
@@ -27,10 +28,10 @@ compile 'com.android.support:design:26.0.0-alpha1'
 ```
 个人认为重要的两点是scrollFlag以及behavior的理解   
 第一：scrollFlag，总共是五种滚动效果，[官网指导说明](https://developer.android.google.cn/reference/android/support/design/widget/AppBarLayout.LayoutParams.html)，具体效果见如下gif   
-![enterAlways](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/enterAlways.gif)
-![snap](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/snap.gif)
-![exitUntilCollapsed](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/exitUntilCollapsed.gif)
-![enterAlwaysCollapsed](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/enterAlwaysCollapsed.gif)
+![enterAlways](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/enterAlways.gif)    
+![snap](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/snap.gif)  
+![exitUntilCollapsed](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/exitUntilCollapsed.gif)  
+![enterAlwaysCollapsed](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/enterAlwaysCollapsed.gif)  
 
 第二：behavior   
 CoordinatorLayout本身并没有做太多事情，和标准的framework视图一起使用时，它就跟一个普通的FrameLayout差不多。它的神奇之处来自于CoordinatorLayout.Behavior。通过为CoordinatorLayout的直接子view设置一个Behavior，就可以拦截touchEvents, window insets, measurement, layout, 和 nested scrolling等动作。
@@ -41,26 +42,26 @@ CoordinatorLayout本身并没有做太多事情，和标准的framework视图一
 [拦截一切的CoordinatorLayout Behavior](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0224/3991.html)     
 [关于CoordinatorLayout与Behavior的一点分析](http://www.jianshu.com/p/a506ee4afecb)       
 ### 1.2 状态栏透明+Activity转场动画效果
-状态栏透明的实现主要是通过第三方库com.jaeger.statusbarutil:library:1.4.0实现的，结合了palette这个库实现取色效果，主要代码如下所示：
+状态栏透明的实现主要是通过第三方库com.jaeger.statusbarutil:library:1.4.0实现的，结合了palette这个库实现取色效果，主要代码如下所示：    
 ![platte](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/platte.png)
 
 Activity转场动画效果主要是通过ActivityCompat配合ActivityOptionsCompat完成的，具体使用步骤不再细说，需要注意两点
 
-第一：清单文件中要转场的activity配置好特定的theme，也就是我们再style文件夹下定义好的ActivityTransitionTheme，其中有涉及到一些动画转换的配置文件，也需要一并引入。
+第一：清单文件中要转场的activity配置好特定的theme，也就是我们再style文件夹下定义好的ActivityTransitionTheme，其中有涉及到一些动画转换的配置文件，也需要一并引入。   
 ![ActivityTransitionTheme](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/ActivityTransitionTheme.png)
 
-第二：在RecyclerView中，对item中的某一个view进行转场，需要通过findViewById找到真正的那个view，否则会出现错乱效果
+第二：在RecyclerView中，对item中的某一个view进行转场，需要通过findViewById找到真正的那个view，否则会出现错乱效果  
 ![activityCompat](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/activityCompat.png)
 
 ## 2、关于AppInfo中字段的说明
-获取应用的各类信息，大致都在ActivityInfo和PackageInfo中，平时这两个类使用的频次可能很少，代码如下
+获取应用的各类信息，大致都在ActivityInfo和PackageInfo中，平时这两个类使用的频次可能很少，代码如下    
 ![appinfo](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/appinfo.png)
 
 ## 3、关于使用Kotlin的几点说明
-首先获取手机中的所有的应用信息，本质上是交给PackageManager来处理，这里采用Rx的方式处理，逻辑上显得非常简洁，同时主子线程的切换也能很好的提高效率和优化交互，还利用了map函数，将输出的对象转成了另外一个自定义的集合数据。
+首先获取手机中的所有的应用信息，本质上是交给PackageManager来处理，这里采用Rx的方式处理，逻辑上显得非常简洁，同时主子线程的切换也能很好的提高效率和优化交互，还利用了map函数，将输出的对象转成了另外一个自定义的集合数据。  
 ![observable](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/observable.png)
 
-其次这次利用Kotlin扩展了Activity，在activity中使用这些方法，方便快捷，同时又不会造成同一代码多处出现的情况。
+其次这次利用Kotlin扩展了Activity，在activity中使用这些方法，方便快捷，同时又不会造成同一代码多处出现的情况。   
 ![exactivity](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/exactivity.png)
 
 下面是参考链接：    
