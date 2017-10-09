@@ -1,8 +1,8 @@
 # AppInfo中的技术说明
 
-[//]: # (abc)
+[//]: ## (abc)
 
-## 关于MD风格的几点说明
+## 1 关于MD风格的几点说明
 
 状态栏透明+Toolbar滚入滚出+TabLayout悬停效果     
 ![整体效果](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/mainpage.gif)
