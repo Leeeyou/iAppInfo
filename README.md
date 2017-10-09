@@ -1,5 +1,6 @@
 # AppInfo中的技术说明
-## 1、关于Material Design风格的几点说明
+
+## 1 关于MD风格的几点说明
 
 状态栏透明+Toolbar滚入滚出+TabLayout悬停效果     
 ![整体效果](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/mainpage.gif)
@@ -53,11 +54,11 @@ Activity转场动画效果主要是通过ActivityCompat配合ActivityOptionsComp
 第二：在RecyclerView中，对item中的某一个view进行转场，需要通过findViewById找到真正的那个view，否则会出现错乱效果  
 ![activityCompat](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/activityCompat.png)
 
-## 2、关于AppInfo中字段的说明
+## 2 关于AppInfo中字段的说明
 获取应用的各类信息，大致都在ActivityInfo和PackageInfo中，平时这两个类使用的频次可能很少，代码如下    
 ![appinfo](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/appinfo.png)
 
-## 3、关于使用Kotlin的几点说明
+## 3 关于使用Kotlin的几点说明
 首先获取手机中的所有的应用信息，本质上是交给PackageManager来处理，这里采用Rx的方式处理，逻辑上显得非常简洁，同时主子线程的切换也能很好的提高效率和优化交互，还利用了map函数，将输出的对象转成了另外一个自定义的集合数据。  
 ![observable](https://raw.githubusercontent.com/LeeeYou/Img/master/appinfo/observable.png)
 
@@ -78,4 +79,5 @@ Activity转场动画效果主要是通过ActivityCompat配合ActivityOptionsComp
 ① android.os.TransactionTooLargeException: data parcel size 1293724 bytes   
 ② https://stackoverflow.com/questions/43807056/rx-kotlin-map-function-cant-infer-return-type    
 ③ http://www.jianshu.com/p/255e2db67147 tablayout标题不见的问题    
-④ http://blog.csdn.net/xiaochuanding/article/details/53727426   
+④ http://blog.csdn.net/xiaochuanding/article/details/53727426  
+
