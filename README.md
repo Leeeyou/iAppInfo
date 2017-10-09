@@ -1,7 +1,5 @@
 # AppInfo中的技术说明
 
-[//]: ## (abc)
-
 ## 1 关于MD风格的几点说明
 
 状态栏透明+Toolbar滚入滚出+TabLayout悬停效果     
@@ -83,4 +81,3 @@ Activity转场动画效果主要是通过ActivityCompat配合ActivityOptionsComp
 ③ http://www.jianshu.com/p/255e2db67147 tablayout标题不见的问题    
 ④ http://blog.csdn.net/xiaochuanding/article/details/53727426  
 
-**[⬆ back to top](#(abc))**
