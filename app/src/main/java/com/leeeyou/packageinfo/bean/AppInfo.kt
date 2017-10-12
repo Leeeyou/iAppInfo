@@ -9,7 +9,7 @@ import android.os.Parcelable
  *
  */
 data class AppInfo(var packageName: String? = null,
-                   var launcherActivity: String? = null,
+                   var launcherActivity: String? = "",
                    var appName: String? = null,
                    var iconUrl: String? = null,
                    var isSystemApp: Boolean? = null,

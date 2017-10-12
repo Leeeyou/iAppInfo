@@ -1,7 +1,6 @@
 package com.leeeyou.packageinfo
 
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,7 +9,9 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.text.ClipboardManager
+import android.text.TextUtils
 import android.widget.Toast
+
 
 /**
  * Created by leeeyou on 2017/9/26.
@@ -30,10 +31,12 @@ fun Activity.copyToClipboard(str: String) {
 }
 
 fun Activity.openApp(packageName: String, launcherActivityName: String) {
-    val intent = Intent(Intent.ACTION_MAIN)
-    intent.addCategory(Intent.CATEGORY_LAUNCHER)
-    intent.component = ComponentName(packageName, launcherActivityName)
-    startActivity(intent)
+    if (TextUtils.isEmpty(launcherActivityName) || launcherActivityName == "None") {
+        toast("无启动页，不可打开")
+    } else {
+        val minIntent = this.packageManager.getLaunchIntentForPackage(packageName)
+        startActivity(minIntent)
+    }
 }
 
 fun drawableToBitmap(drawable: Drawable): Bitmap {

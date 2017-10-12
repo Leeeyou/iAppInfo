@@ -52,31 +52,39 @@ class MainActivity : AppCompatActivity() {
     private fun loadApps() {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        val queryIntentActivities = packageManager.queryIntentActivities(intent, 0)
 
-        Observable.fromArray(packageManager.queryIntentActivities(intent, 0))
+        Observable.fromArray(packageManager.getInstalledPackages(0))
                 .map {
                     it.forEach {
                         val appInfo = AppInfo()
 
-                        appInfo.packageName = it.activityInfo.packageName
-                        appInfo.launcherActivity = it.activityInfo.name
-                        appInfo.appName = it.activityInfo.loadLabel(packageManager) as String?
-                        appInfo.iconUrl = saveBitmapToLocal(appInfo.packageName, drawableToBitmap(it.activityInfo.loadIcon(packageManager)))
+                        appInfo.packageName = it.packageName
 
-                        val applicationInfo = packageManager.getApplicationInfo(appInfo.packageName, 0)
-                        appInfo.isSystemApp = applicationInfo.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
+                        for (activity in queryIntentActivities) {
+                            if (activity.activityInfo.packageName == appInfo.packageName) {
+                                appInfo.launcherActivity = activity.activityInfo.name
+                                break
+                            }
+                        }
 
-                        val packageInfo = packageManager.getPackageInfo(appInfo.packageName, PackageManager.GET_PERMISSIONS)
-                        appInfo.versionCode = packageInfo.versionCode
-                        appInfo.versionName = packageInfo.versionName
+                        appInfo.appName = it.applicationInfo.loadLabel(packageManager) as String?
+                        appInfo.iconUrl = saveBitmapToLocal(appInfo.packageName, drawableToBitmap(it.applicationInfo.loadIcon(packageManager)))
 
-                        appInfo.installDate = packageInfo.firstInstallTime
-                        appInfo.permissionCount = packageInfo.requestedPermissions?.size
+                        appInfo.isSystemApp = it.applicationInfo.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
+
+                        appInfo.versionCode = it.versionCode
+                        appInfo.versionName = it.versionName
+
+                        appInfo.installDate = it.firstInstallTime
+                        appInfo.permissionCount = it.requestedPermissions?.size
 
                         appInfo.signMD5 = getSignMd5Str(appInfo.packageName)
                         appInfo.size = getApkSize(appInfo.packageName)
 
                         appInfoList.add(appInfo)
+
+                        Log.e("xxx", appInfo.toString())
                     }
                     return@map appInfoList
                 }

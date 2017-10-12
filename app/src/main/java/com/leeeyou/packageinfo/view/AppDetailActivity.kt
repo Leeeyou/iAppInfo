@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.text.format.Formatter
 import android.view.Menu
 import android.view.MenuItem
@@ -58,7 +59,13 @@ class AppDetailActivity : AppCompatActivity() {
     private fun transformData(appInfo: AppInfo) {
         dataPair = arrayListOf()
         dataPair.add(Pair(getString(R.string.packageName), appInfo.packageName!!))
-        dataPair.add(Pair(getString(R.string.launcherActivity), appInfo.launcherActivity!!))
+
+        if (TextUtils.isEmpty(appInfo.launcherActivity)) {
+            dataPair.add(Pair(getString(R.string.launcherActivity), "None"))
+        } else {
+            dataPair.add(Pair(getString(R.string.launcherActivity), appInfo.launcherActivity!!))
+        }
+
         dataPair.add(Pair(getString(R.string.versionName), appInfo.versionName!!))
         dataPair.add(Pair(getString(R.string.versionCode), appInfo.versionCode.toString()))
         dataPair.add(Pair(getString(R.string.installDate), DateFormat.getDateInstance().format(Date(appInfo.installDate!!.toLong()))))
