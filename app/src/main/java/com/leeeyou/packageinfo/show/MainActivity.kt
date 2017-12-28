@@ -1,20 +1,22 @@
-package com.leeeyou.packageinfo.view
+package com.leeeyou.packageinfo.show
 
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.GET_PERMISSIONS
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
+import android.text.format.Formatter
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.afollestad.materialdialogs.MaterialDialog
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
-import com.leeeyou.packageinfo.drawableToBitmap
-import com.leeeyou.packageinfo.openGithub
+import com.leeeyou.packageinfo.util.drawableToBitmap
+import com.leeeyou.packageinfo.util.openGithub
 import com.leeeyou.packageinfo.view.adapter.ViewPageAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -77,10 +79,13 @@ class MainActivity : AppCompatActivity() {
                         appInfo.versionName = it.versionName
 
                         appInfo.installDate = it.firstInstallTime
-                        appInfo.permissionCount = it.requestedPermissions?.size
+
+                        val tempAppInfo = packageManager.getPackageInfo(appInfo.packageName, GET_PERMISSIONS)
+                        appInfo.permissionCount = tempAppInfo.requestedPermissions?.size
+                        if (appInfo.permissionCount == null) appInfo.permissionCount = 0
 
                         appInfo.signMD5 = getSignMd5Str(appInfo.packageName)
-                        appInfo.size = getApkSize(appInfo.packageName)
+                        appInfo.size = Formatter.formatFileSize(this, getApkSize(appInfo.packageName))
 
                         appInfoList.add(appInfo)
 

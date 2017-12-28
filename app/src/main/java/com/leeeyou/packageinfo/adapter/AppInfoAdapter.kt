@@ -6,11 +6,12 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
 
-
 /**
- * Created by leeeyou on 2017/9/21.
- *
- * System app adapter
+ * ClassName:   AppInfoAdapter
+ * Description: System app adapter
+ * 
+ * Author:      leeeyou                             
+ * Date:        2017/09/21 17:04
  */
 class AppInfoAdapter(layoutResId: Int, data: List<AppInfo>) : BaseQuickAdapter<AppInfo, BaseViewHolder>(layoutResId, data) {
 

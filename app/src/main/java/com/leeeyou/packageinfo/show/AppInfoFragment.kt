@@ -1,5 +1,6 @@
-package com.leeeyou.packageinfo.view
+package com.leeeyou.packageinfo.show
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -15,20 +16,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jaeger.library.StatusBarUtil
-import com.leeeyou.packageinfo.Constant
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
-import com.leeeyou.packageinfo.copyToClipboard
-import com.leeeyou.packageinfo.toast
+import com.leeeyou.packageinfo.util.Constant
+import com.leeeyou.packageinfo.util.copyToClipboard
+import com.leeeyou.packageinfo.util.toast
 import com.leeeyou.packageinfo.view.adapter.AppInfoAdapter
 import kotlinx.android.synthetic.main.fragment_system_app.*
 import java.io.File
 
-
 /**
- * Created by leeeyou on 2017/9/21.
+ * ClassName:   AppInfoFragment
+ * Description: the app info list fragment
  *
- * the app info list fragment
+ * Author:      leeeyou
+ * Date:        2017/9/21 17:11
  */
 class AppInfoFragment() : Fragment() {
 
@@ -37,6 +39,7 @@ class AppInfoFragment() : Fragment() {
     private lateinit var toolbar: Toolbar
     private var witchPosition: Int = 0
 
+    @SuppressLint("ValidFragment")
     constructor(mList: MutableList<AppInfo>, tabLayout: TabLayout, toolbar: Toolbar, witchPosition: Int) : this() {
         this.mList = mList
         this.tabLayout = tabLayout
@@ -94,7 +97,7 @@ class AppInfoFragment() : Fragment() {
             }
 
             ActivityCompat.startActivity(activity,
-                    Intent(context, AppDetailActivity::class.java).putExtra("appInfo", appInfo),
+                    Intent(context, AppDetailMVPActivity::class.java).putExtra("appInfo", appInfo),
                     ActivityOptionsCompat
                             .makeSceneTransitionAnimation(
                                     activity,

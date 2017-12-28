@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">AppInfo</string>
 
-    <string name="clipSuccess">包名复制成功</string>
-    <string name="clipSuccess2">复制成功</string>
+    <string name="clipSuccess">Package name copied successfully</string>
+    <string name="clipSuccess2">Copy successfully</string>
 
     <string name="view_name_image_icon">imageIcon</string>
     <string name="view_name_text_title">textAppName</string>

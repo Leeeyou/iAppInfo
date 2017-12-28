@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.MainActivity"
+            android:name=".show.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/ActivityTransitionTheme">
             <intent-filter>
@@ -23,9 +23,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.AppDetailActivity"
+            android:name=".show.AppDetailActivity"
             android:theme="@style/ActivityTransitionTheme">
         </activity>
+
+        <activity
+            android:name=".show.AppDetailMVPActivity"
+            android:theme="@style/ActivityTransitionTheme"/>
     </application>
 
 </manifest>

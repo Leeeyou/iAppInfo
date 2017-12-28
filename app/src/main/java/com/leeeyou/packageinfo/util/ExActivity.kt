@@ -1,4 +1,4 @@
-package com.leeeyou.packageinfo
+package com.leeeyou.packageinfo.util
 
 import android.app.Activity
 import android.content.Context
@@ -12,11 +12,12 @@ import android.text.ClipboardManager
 import android.text.TextUtils
 import android.widget.Toast
 
-
 /**
- * Created by leeeyou on 2017/9/26.
- *
- *
+ * ClassName:   ExActivity                        
+ * Description: Activity extension class
+ * 
+ * Author:      leeeyou                             
+ * Date:        2017/12/28 17:12                     
  */
 fun Activity.toast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, duration).show()

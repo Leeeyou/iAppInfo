@@ -41,7 +41,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/text_gray"
-        tool:text="com.leeeyou.com.leeeyoucom.leeeyoucom.leeeyoucom.leeeyoucom.leeeyoucom.leeeyoucom.leeeyoucom.leeeyoucom.leeeyou"/>
+        tool:text="package name show here"/>
 
     <View
         android:layout_width="match_parent"

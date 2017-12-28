@@ -4,9 +4,11 @@ import android.os.Parcel
 import android.os.Parcelable
 
 /**
- * Created by leeeyou on 2017/9/22.
+ * ClassName:   AppInfo
+ * Description:
  *
- *
+ * Author:      leeeyou
+ * Date:        2017/9/22 17:04
  */
 data class AppInfo(var packageName: String? = null,
                    var launcherActivity: String? = "",
@@ -18,7 +20,7 @@ data class AppInfo(var packageName: String? = null,
                    var installDate: Long? = null,
                    var signMD5: String? = null,
                    var signSHA: String? = null,
-                   var size: Long? = 0,
+                   var size: String? = null,
                    var permissionCount: Int? = 0) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -31,7 +33,7 @@ data class AppInfo(var packageName: String? = null,
             parcel.readValue(Long::class.java.classLoader) as? Long,
             parcel.readString(),
             parcel.readString(),
-            parcel.readValue(Long::class.java.classLoader) as? Long,
+            parcel.readValue(Long::class.java.classLoader) as? String,
             parcel.readValue(Int::class.java.classLoader) as? Int)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

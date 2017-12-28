@@ -1,4 +1,4 @@
-package com.leeeyou.packageinfo.view
+package com.leeeyou.packageinfo.show
 
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -15,16 +15,22 @@ import android.view.MenuItem
 import com.jaeger.library.StatusBarUtil
 import com.leeeyou.packageinfo.R
 import com.leeeyou.packageinfo.bean.AppInfo
-import com.leeeyou.packageinfo.copyToClipboard
-import com.leeeyou.packageinfo.openApp
-import com.leeeyou.packageinfo.toast
+import com.leeeyou.packageinfo.util.copyToClipboard
+import com.leeeyou.packageinfo.util.openApp
+import com.leeeyou.packageinfo.util.toast
 import com.leeeyou.packageinfo.view.adapter.AppDetailInfoAdapter
 import kotlinx.android.synthetic.main.activity_app_detail.*
 import java.io.File
 import java.text.DateFormat
 import java.util.*
 
-
+/**
+ * ClassName:   AppDetailActivity                        
+ * Description: App detail info activity
+ * 
+ * Author:      leeeyou                             
+ * Date:        2017/12/28 17:09                     
+ */
 class AppDetailActivity : AppCompatActivity() {
 
     private lateinit var appInfo: AppInfo

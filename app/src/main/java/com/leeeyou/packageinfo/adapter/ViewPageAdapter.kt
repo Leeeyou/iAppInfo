@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.widget.Toolbar
 import com.leeeyou.packageinfo.bean.AppInfo
-import com.leeeyou.packageinfo.view.AppInfoFragment
+import com.leeeyou.packageinfo.show.AppInfoFragment
 
 /**
  * Created by leeeyou on 2017/9/21.
