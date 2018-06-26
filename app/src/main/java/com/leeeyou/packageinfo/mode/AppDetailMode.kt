@@ -7,11 +7,11 @@ import java.util.*
 
 
 /**
- * ClassName:   AppDetailMode                        
+ * ClassName:   AppDetailMode
  * Description: MVP : Mode for AppDetailActivity
- * 
- * Author:      leeeyou                             
- * Date:        2017/12/28 17:04                     
+ *
+ * Author:      leeeyou
+ * Date:        2017/12/28 17:04
  */
 class AppDetailMode {
 

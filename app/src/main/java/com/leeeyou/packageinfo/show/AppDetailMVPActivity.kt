@@ -66,9 +66,7 @@ class AppDetailMVPActivity : AbstractMvpActivity<AppDetailView, AppDetailPresent
             }
 
             imgIcon.setImageURI(Uri.fromFile(File(appInfo.iconUrl)))
-            imgIcon.setOnClickListener({
-                super.onBackPressed()
-            })
+            imgIcon.setOnClickListener({ super.onBackPressed() })
         }
     }
 
